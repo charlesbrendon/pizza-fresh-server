@@ -6,7 +6,7 @@ import { Table } from './entities/table.entity';
 export class TableService {
   tables: Table[] = [];
   findAll() {
-    return 'Buscar todas as mesas';
+    return this.tables;
   }
 
   create(createTableDto: CreateTableDto) {
