@@ -29,4 +29,8 @@ export class TableService {
       data,
     });
   }
+
+  async delete(id: string) {
+    await this.prisma.table.delete({ where: { id } });
+  }
 }
