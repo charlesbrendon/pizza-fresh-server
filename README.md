@@ -48,8 +48,7 @@ $ npm run test:cov
 
 ## Stay in touch
 
-- Author - [Charles](https://kamilmysliwiec.com)
-
+- Author - [Charles]
 ## License
 
 Nest is [MIT licensed](LICENSE).
