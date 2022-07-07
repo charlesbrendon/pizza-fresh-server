@@ -20,7 +20,7 @@ export class CreateUserDto {
 
   // Password
   @IsString()
-  @MinLength(8)
+  @MinLength(6)
   @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
     message: 'Senha muito fraca',
   })

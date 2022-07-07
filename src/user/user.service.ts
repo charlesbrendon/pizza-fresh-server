@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnprocessableEntityException,
@@ -7,7 +8,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
@@ -29,16 +30,39 @@ export class UserService {
     return this.findById(id);
   }
 
-  create(dto: CreateUserDto): Promise<User> {
+  async create(dto: CreateUserDto): Promise<User> {
+    if (dto.password != dto.confirmPassword) {
+      throw new BadRequestException('A senhas digitadas não são iguais.');
+    }
+
     delete dto.confirmPassword;
-    const data: User = { ...dto };
+
+    const data: User = {
+      ...dto,
+      password: await bcrypt.hash(dto.password, 10),
+    };
     return this.prisma.user.create({ data }).catch(this.handleError);
   }
 
   async update(id: string, dto: UpdateUserDto): Promise<User> {
-    delete dto.confirmPassword;
     await this.findById(id);
-    const data: Partial<User> = { ...dto };
+
+    if (dto.password) {
+      if (dto.password != dto.confirmPassword) {
+        throw new BadRequestException('A senhas digitadas não são iguais.');
+      }
+    }
+
+    delete dto.confirmPassword;
+
+    const data: Partial<User> = {
+      ...dto,
+      password: await bcrypt.hash(dto.password, 10),
+    };
+
+    if (data.password) {
+      data.password = await bcrypt.hash(data.password, 10);
+    }
 
     return this.prisma.user
       .update({
