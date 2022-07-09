@@ -22,13 +22,13 @@ export class UserService {
   };
 
   constructor(private readonly prisma: PrismaService) {}
-
+  // Find all user
   findAll(): Promise<User[]> {
     return this.prisma.user.findMany({
       select: this.userSelect,
     });
   }
-
+  // Function to check ID
   async findById(id: string): Promise<User> {
     const record = await this.prisma.user.findUnique({
       where: { id },
@@ -40,11 +40,11 @@ export class UserService {
     }
     return record;
   }
-
+  // Find user By ID
   async findOne(id: string): Promise<User> {
     return this.findById(id);
   }
-
+  // Create user
   async create(dto: CreateUserDto): Promise<User> {
     if (dto.password != dto.confirmPassword) {
       throw new BadRequestException('A senhas digitadas não são iguais.');
@@ -60,7 +60,7 @@ export class UserService {
       .create({ data, select: this.userSelect })
       .catch(this.handleError);
   }
-
+  // Edit user by ID
   async update(id: string, dto: UpdateUserDto): Promise<User> {
     await this.findById(id);
 
@@ -89,12 +89,12 @@ export class UserService {
       })
       .catch(this.handleError);
   }
-
+  // Remove user by ID
   async delete(id: string) {
     await this.findById(id);
     await this.prisma.user.delete({ where: { id } });
   }
-
+  // Message ERROR
   handleError(error: Error): undefined {
     const errorLines = error.message.split('\n');
     const lastErrorLine = errorLines[errorLines.length - 1]?.trim();
@@ -103,7 +103,7 @@ export class UserService {
       console.error(error);
     }
     throw new UnprocessableEntityException(
-      lastErrorLine || 'Algum erro ocorreu ao executar a operção',
+      lastErrorLine || 'Algum erro ocorreu ao executar a operação',
     );
   }
 }
