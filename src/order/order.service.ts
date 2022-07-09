@@ -11,15 +11,23 @@ export class OrderService {
   create(dto: CreateOrderDto) {
     const data: Prisma.OrderCreateInput = {
       user: {
-        connect: { id: dto.userId },
+        connect: {
+          id: dto.userId,
+        },
       },
       table: {
-        connect: { number: dto.tableNumber },
+        connect: {
+          number: dto.tableNumber,
+        },
       },
       products: {
-        connect: dto.products.map((productId) => ({
-          id: productId,
-        })),
+        createMany: {
+          data: dto.products.map((createOrdeProductDto) => ({
+            productId: createOrdeProductDto.productId,
+            quantity: createOrdeProductDto.quantity,
+            description: createOrdeProductDto.description,
+          })),
+        },
       },
     };
     return this.prisma.order
@@ -39,7 +47,13 @@ export class OrderService {
           },
           products: {
             select: {
-              name: true,
+              quantity: true,
+              description: true,
+              product: {
+                select: {
+                  name: true,
+                },
+              },
             },
           },
         },
@@ -52,15 +66,29 @@ export class OrderService {
       select: {
         id: true,
         user: {
-          select: { name: true },
+          select: {
+            name: true,
+          },
         },
         table: {
-          select: { number: true },
+          select: {
+            number: true,
+          },
         },
         products: {
-          select: { name: true },
+          select: {
+            product: {
+              select: {
+                name: true,
+              },
+            },
+          },
         },
-        _count: { select: { products: true } },
+        _count: {
+          select: {
+            products: true,
+          },
+        },
       },
     });
   }
@@ -82,10 +110,14 @@ export class OrderService {
         },
         products: {
           select: {
-            name: true,
-            description: true,
-            price: true,
-            image: true,
+            product: {
+              select: {
+                name: true,
+                description: true,
+                price: true,
+                image: true,
+              },
+            },
           },
         },
       },
