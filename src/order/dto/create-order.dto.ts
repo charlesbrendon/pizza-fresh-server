@@ -22,5 +22,5 @@ export class CreateOrderDto {
     example:
       '["066866ad-ada4-4614-a121-35e40e0c302a", "e7eaa21a-ebd9-40fd-95b1-f33df74ceb7c" ]',
   })
-  product: string[];
+  products: string[];
 }
