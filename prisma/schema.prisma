@@ -82,5 +82,6 @@ model OrderProduct {
   quantity    Int
   description String
 
+  @@unique([orderId, productId])
   @@map("order_to_product")
 }
