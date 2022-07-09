@@ -16,7 +16,7 @@ export class CreateOrderDto {
   })
   tableNumber: number;
 
-  @IsUUID(undefined, {each: true})
+  @IsUUID(undefined, { each: true })
   @ApiProperty({
     description: 'Lista com os IDs dos produtos que estão no pedido',
     example:
