@@ -7,6 +7,7 @@ export class LoginResponseDto {
     example: 'TOKEN_GERADO_AUTOMATICAMENTE',
   })
   token: string;
+
   @ApiProperty({
     description: 'Dados do usuário autenticado',
   })

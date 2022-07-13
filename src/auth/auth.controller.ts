@@ -14,10 +14,7 @@ export class AuthController {
   @ApiOperation({
     summary: 'Realizar login, recebendo um token de autenticação',
   })
-  async login(@Body() loginDto: LoginDto): Promise<LoginResponseDto> {
-    return {
-      token: 'Test',
-      user: undefined,
-    };
+  login(@Body() loginDto: LoginDto): Promise<LoginResponseDto> {
+    return this.authService.login(loginDto);
   }
 }
