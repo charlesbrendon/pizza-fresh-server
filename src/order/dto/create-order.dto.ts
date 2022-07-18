@@ -4,12 +4,6 @@ import { IsInt, IsPositive, IsUUID, ValidateNested } from 'class-validator';
 import { CreateOrderProductDto } from './create-order-product.dto';
 
 export class CreateOrderDto {
-  @ApiProperty({
-    description: 'ID do usuário que está criando o pedido',
-    example: 'ecb90a23-92cd-44e9-808f-0b1ccc4f8507',
-  })
-  userId: string;
-
   @IsInt()
   @IsPositive()
   @ApiProperty({
